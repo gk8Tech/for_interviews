@@ -16,6 +16,7 @@
 		</template>
 		<template v-slot:expanded-item="{ headers, item }">
 			<td :colspan="headers.length">
+				{{ item.assistant.length !== 0 ? '' : "Все от тебя сбежали" }}
 				<div v-for="assistant in item.assistant" :key="assistant.phone" :value="assistant.name">
 					Асистент: {{ assistant.name }}
 					Номер телефона: {{ assistant.numberPhone }}
