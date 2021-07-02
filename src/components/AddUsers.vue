@@ -19,6 +19,8 @@
 									:clearable="true"
 									v-model="userInfo.departmentHeadName"
 									:items="addDepartmentHeadNames"
+									item-text="departmentHeadName"
+									return-object
 									label="Имя начальника"
 								></v-select>
 							</v-col>
@@ -46,13 +48,16 @@ export default {
 			userName: '',
 			userNumberPhone: '',
 		},
-		departmentHeadNames: ['Дмитрий', 'Сергей'],
 		dialog: false,
 	}),
 	methods: {
-		...mapMutations(['changeAddUserDialog', 'addUser']),
+		...mapMutations(['changeAddUserDialog', 'addUserWithoutDepartmentHead', 'addUserWithDepartmentHead']),
 		add() {
-			this.addUser(this.userInfo);
+			if (this.userInfo.departmentHeadName) {
+				this.addUserWithDepartmentHead(this.userInfo);
+			} else {
+				this.addUserWithoutDepartmentHead(this.userInfo);
+			}
 			this.changeAddUserDialog();
 			this.userInfo = {
 				departmentHeadName: '',
@@ -64,8 +69,8 @@ export default {
 	computed: {
 		...mapGetters(['getAddUserDialog', 'getUsers']),
 		addDepartmentHeadNames: function () {
-			const names = this.getUsers.map((e) => e.userName);
-			return [...this.departmentHeadNames, ...names];
+			const names = this.getUsers.map((e) => ({ id: e.id, departmentHeadName: e.departmentHeadName }));
+			return names;
 		},
 	},
 };

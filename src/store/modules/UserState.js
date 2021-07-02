@@ -4,11 +4,18 @@ export default {
 		changeAddUserDialog(state) {
 			state.isAddUserDialog = !state.isAddUserDialog;
 		},
-		addUser(state, user) {
+		addUserWithoutDepartmentHead(state, user) {
 			const nextIdForUser = state.users[state.users.length - 1].id + 1;
-			const userWithNextId = { ...user, id: nextIdForUser};
+			const userWithNextId = { id: nextIdForUser, departmentHeadName: user.userName, departmentHeadNumberPhone: user.userNumberPhone, assistant: [] };
 			state.users.push(userWithNextId);
 			localStorage.setItem('users', JSON.stringify(state.users));
+		},
+
+		addUserWithDepartmentHead(state, user) {
+			const departmentHeadId = state.users.findIndex((e) => 
+				e.id === user.departmentHeadName.id
+			)
+			state.users[departmentHeadId].assistant.push({name: user.userName, numberPhone: user.userNumberPhone });	
 		},
 		setLocalStorageUsers(state, user) {
 			state.users = user;
@@ -19,21 +26,21 @@ export default {
 		users: [
 			{
 				id: 1,
-				userName: 'Иван',
-				userNumberPhone: '777-55',
-				departmentHeadName: 'Дмитрий',
+				departmentHeadName: 'Иван',
+				departmentHeadNumberPhone: '777-55',
+				assistant: [{name: 'Дмитрий', numberPhone: '444-22'}],
 			},
 			{
 				id: 2,
-				userName: 'Сергей',
-				userNumberPhone: '777-44',
-				departmentHeadName: 'Дмитрий',
+				departmentHeadName: 'Сергей',
+				departmentHeadNumberPhone: '777-44',
+				assistant: [{name: 'Николай', numberPhone: '444-44'}],
 			},
 			{
 				id: 3,
-				userName: 'Олег',
-				userNumberPhone: '777-33',
-				departmentHeadName: 'Дмитрий',
+				departmentHeadName: 'Олег',
+				departmentHeadNumberPhone: '777-33',
+				assistant: [{name: 'Олег', numberPhone: '444-55'}],
 			},
 		],
 	},

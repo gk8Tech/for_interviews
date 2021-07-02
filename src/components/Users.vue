@@ -15,13 +15,18 @@
 			</v-toolbar>
 		</template>
 		<template v-slot:expanded-item="{ headers, item }">
-			<td :colspan="headers.length">Начальник: {{ item.departmentHeadName }} ---- Номер телефона: {{ item.userNumberPhone }} </td>
+			<td :colspan="headers.length">
+				<div v-for="assistant in item.assistant" :key="assistant.phone" :value="assistant.name">
+					Асистент: {{ assistant.name }}
+					Номер телефона: {{ assistant.numberPhone }}
+				</div>
+			</td>
 		</template>
 	</v-data-table>
 </template>
 
 <script>
-import {  mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
 	data() {
@@ -29,9 +34,8 @@ export default {
 			expanded: [],
 			singleExpand: true,
 			headersMap: [
-				{ text: 'Имя', value: 'userName' },
-				{ text: 'Телефон', value: 'userNumberPhone' },
-				{ text: 'Начальник', value: 'departmentHeadName' },
+				{ text: 'Имя', value: 'departmentHeadName' },
+				{ text: 'Телефон', value: 'departmentHeadNumberPhone' },
 			],
 		};
 	},
